@@ -1,3 +1,9 @@
+# Mac File System
+.DS_Store
+
+# Plombery data
+.data/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
