@@ -3,6 +3,7 @@
 
 # Plombery data
 .data/
+plombery.db
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
