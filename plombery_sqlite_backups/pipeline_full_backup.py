@@ -27,8 +27,7 @@ async def full_compressed_backup_sqlite_database(params: FullBackupInputParams):
     logger = get_logger()
     
     if not os.path.exists(params.sqlite_path):
-        logger.error(f"Could not find source database: {params.sqlite_path}")
-        return
+        raise Exception(f"Could not find source database: {params.sqlite_path}")
 
     logger.info(f"Source Database: {params.sqlite_path}")
  
