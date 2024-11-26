@@ -2,7 +2,8 @@
 
 plombery-sqlite-backups lets you easily backup a local sqlite database to an UNC path using [Plombery](https://github.com/lucafaggianelli/plombery).
 
-![image](https://github.com/user-attachments/assets/05038be4-f840-44b5-a5ae-0f11f3a548fc)
+![image](https://github.com/user-attachments/assets/a7beb083-e556-4c2d-8cad-5249b85d267a)
+
 
 # Installation
 ## Prerequisites
