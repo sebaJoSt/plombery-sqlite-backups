@@ -1,34 +1,27 @@
-Pyinstaller
+# plombery-sqlite-backups
 
-Fix error in
-root\.venv\Lib\site-packages\plombery\notifications\templates.py
-Package Loader Problem, this works:
+plombery-sqlite-backups lets you easily backup a local sqlite database to an UNC path using [Plombery](https://github.com/lucafaggianelli/plombery).
 
-# from jinja2 import Environment, PackageLoader, select_autoescape
+![image](https://github.com/user-attachments/assets/05038be4-f840-44b5-a5ae-0f11f3a548fc)
 
-# _jinja_env = Environment(
-#     loader=PackageLoader("plombery.notifications", package_path="email_templates"),
-#     autoescape=select_autoescape(),
-# )
+# Installation
+## Prerequisites
+### Python
+plombery-sqlite-backups was tested with Python v3.10, if you don't have it installed yet, go to the [official Python website](https://www.python.org/downloads/), download it and install it.
+You can also use [Pyenv](https://github.com/pyenv/pyenv). Pyenv is a wonderful tool for managing multiple Python versions.
+### Poetry
+It's a good practice to install dependencies specific to a project in a dedicated virtual environment for that project. We recommend using [Poetry](https://python-poetry.org/).
 
-# _pipeline_run_template = _jinja_env.get_template("transactional.html")
+## Installation
+- Clone or download this repository
+- To install the defined dependencies for plombery-sqlite-backups, just run the install command.
 
-def render_pipeline_run(
-    pipeline_name: str, pipeline_status: str, pipeline_run_url: str
-):
-    return ""
-    # return _pipeline_run_template.render(
-    #     pipeline_name=pipeline_name,
-    #     pipeline_status=pipeline_status,
-    #     pipeline_run_url=pipeline_run_url,
-    # )
+```bash
+poetry install
+```
 
-
-Fix error in root\.venv\Lib\site-packages\starlette\staticfiles.py
-if check_dir and directory is not None and not os.path.isdir(directory):
-            os.makedirs(directory)
-            #raise RuntimeError(f"Directory '{directory}' does not exist")
-
-
-
-pyinstaller -F --collect-all apprise app.py
+# Run the app
+```bash
+poetry run python plombery_sqlite_backups/app.py
+```
+Now open the page [http://localhost:8000](http://localhost:8000) in your browser and enjoy!
