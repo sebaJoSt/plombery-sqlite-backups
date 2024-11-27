@@ -11,6 +11,7 @@ python = "~3.10"
 plombery = "^0.4.1"
 lz4 = "^4.3.3"
 aiofiles = "^24.1.0"
+click = "^8.1.7"
 
 [tool.poetry.scripts]
 plombery_sqlite_backups = "plombery_sqlite_backups.app:cli"

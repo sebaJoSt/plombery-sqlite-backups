@@ -91,13 +91,13 @@ def append_subfolders_to_backupFolder(backupfolder, subfoldersDict, year, sqlite
     Returns:
         str: the backup folder including the appended sub folders
     """
-    
+    if subfoldersDict["Year"]:
+          backupfolder = os.path.join(backupfolder, year)
     if subfoldersDict["ComputerName"]:
           backupfolder = os.path.join(backupfolder, socket.gethostname())
     if subfoldersDict["DatabaseName"]:
           backupfolder = os.path.join(backupfolder, sqliteDatabaseName)
-    if subfoldersDict["Year"]:
-          backupfolder = os.path.join(backupfolder, year)
+   
           
     return backupfolder
 
