@@ -12,6 +12,9 @@ plombery = "^0.4.1"
 lz4 = "^4.3.3"
 aiofiles = "^24.1.0"
 
+[tool.poetry.scripts]
+plombery_sqlite_backups = "plombery_sqlite_backups.app:cli"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
