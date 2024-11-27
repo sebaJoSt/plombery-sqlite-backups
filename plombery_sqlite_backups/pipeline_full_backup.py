@@ -3,7 +3,7 @@ import os
 from pydantic import BaseModel
 from datetime import datetime
 from apscheduler.triggers.interval import IntervalTrigger
-from plombery import task, get_logger, Trigger, register_pipeline
+from plombery import task, get_logger, Trigger, register_pipeline, Pipeline
 
 from plombery_sqlite_backups.helpers import append_subfolders_to_backupFolder, get_formatted_timestamp, backup_database_async, compress_file_lz4
 
@@ -53,21 +53,60 @@ async def full_compressed_backup_sqlite_database(params: FullBackupInputParams):
 
     logger.info(f"Full compressed (LZ4) backup successfully created: {os.path.join(backup_folder, backup_file_name)}.lz4")
 
-register_pipeline(
-    id="full_backup_pipeline",
-    description="Creates a full compressed backup (LZ4) of the given source sqlite database in a specified destination",
-    tasks=[full_compressed_backup_sqlite_database],
-    params=FullBackupInputParams,
-    triggers=[
-        Trigger(
-            id="daily",
-            name="Daily",
-            description="Run the pipeline every day",
-            schedule=IntervalTrigger(days=1),
-            params={
-                "sqlite_path": FULL_BACKUP_SQLITE_PATH,
-                "convert_currency": True,
-            },
-        )
-    ],
-)
+def get_full_backup_pipeline():
+    return Pipeline(
+        id="full_backup_pipeline",
+        description="Creates a full compressed backup (LZ4) of the given source sqlite database in a specified destination",
+        tasks=[full_compressed_backup_sqlite_database],
+        params=FullBackupInputParams,
+        triggers=[
+            Trigger(
+                id="daily",
+                name="Daily",
+                description="Run the pipeline every day",
+                schedule=IntervalTrigger(days=1),
+                params={
+                    "sqlite_path": FULL_BACKUP_SQLITE_PATH,
+                    "convert_currency": True,
+                },
+            )
+        ],
+    )
+
+# full_backup_pipeline = Pipeline(
+#      id="full_backup_pipeline",
+#     description="Creates a full compressed backup (LZ4) of the given source sqlite database in a specified destination",
+#     tasks=[full_compressed_backup_sqlite_database],
+#     params=FullBackupInputParams,
+#     triggers=[
+#         Trigger(
+#             id="daily",
+#             name="Daily",
+#             description="Run the pipeline every day",
+#             schedule=IntervalTrigger(days=1),
+#             params={
+#                 "sqlite_path": FULL_BACKUP_SQLITE_PATH,
+#                 "convert_currency": True,
+#             },
+#         )
+#     ],
+# )
+
+# register_pipeline(
+#     id="full_backup_pipeline",
+#     description="Creates a full compressed backup (LZ4) of the given source sqlite database in a specified destination",
+#     tasks=[full_compressed_backup_sqlite_database],
+#     params=FullBackupInputParams,
+#     triggers=[
+#         Trigger(
+#             id="daily",
+#             name="Daily",
+#             description="Run the pipeline every day",
+#             schedule=IntervalTrigger(days=1),
+#             params={
+#                 "sqlite_path": FULL_BACKUP_SQLITE_PATH,
+#                 "convert_currency": True,
+#             },
+#         )
+#     ],
+# )

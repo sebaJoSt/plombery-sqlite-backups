@@ -2,12 +2,15 @@ from datetime import datetime
 from random import randint
 import uvicorn
 from plombery import Pipeline, _Plombery, get_logger, Trigger, task
-from plombery_sqlite_backups import pipeline_full_backup, pipeline_inc_backup
+from plombery_sqlite_backups import pipeline_inc_backup
+from plombery_sqlite_backups.pipeline_full_backup import get_full_backup_pipeline
+
 from apscheduler.triggers.interval import IntervalTrigger
 
 def cli():
     app = _Plombery()
     app.register_pipeline(sales_pipeline)
+    app.register_pipeline(get_full_backup_pipeline())
     uvicorn.run(app)
     #uvicorn.run("plombery:get_app", reload=True, factory=True)
 
