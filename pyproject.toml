@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "plombery-sqlite-backups"
-version = "0.1.1"
+version = "0.1.2"
 description = ""
 authors = ["Sebastian Strobl <sebastian.strobl@gmx.de>"]
 readme = "README.md"
