@@ -2,6 +2,7 @@ import asyncio
 import os
 import socket
 import sqlite3
+import aiosqlite
 import tzlocal
 import lz4.frame
 
@@ -38,11 +39,14 @@ async def backup_database_async(
         )
     else:
         # SQLite Backup API
-        conn1 = sqlite3.connect(sqlite_file)
-        conn2 = sqlite3.connect(backup_file_name_full_path)
-        conn1.backup(conn2)
-        conn1.close()
-        conn2.close()
+        await backup_sqlite_db(sqlite_file, backup_file_name_full_path)
+
+
+async def backup_sqlite_db(sqlite_file, backup_file_name_full_path):
+    # SQLite Backup API
+    async with aiosqlite.connect(sqlite_file) as conn1:
+        async with aiosqlite.connect(backup_file_name_full_path) as conn2:
+            await conn1.backup(conn2)
 
 
 def compress_file_lz4(source, destination, deleteSourceAfter):
