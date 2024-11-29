@@ -185,9 +185,8 @@ async def create_snapshot(
                     logger.info(
                         f"Writing to 'storage' folder .. ({pages_done_percent:.0f}% done)"
                     )
-                else:
-                    logger.info("Writing to 'storage' folder finished (100% done)")
                 page_current_step += 0.1 * page_count
+            logger.info("Writing to 'storage' folder finished (100% done)")
 
     # Write snapshot file
     logger.info("Creating the snapshot file ..")
