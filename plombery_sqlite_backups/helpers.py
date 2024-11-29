@@ -113,15 +113,15 @@ def append_subfolders_to_backupFolder(
     Returns:
         str: the backup folder including the appended sub folders
     """
-    if isFullBackup:
-        backupfolder = os.path.join(backupfolder, "full backups")
-    else:
-        backupfolder = os.path.join(backupfolder, "incremental backups")
+
     if subfoldersDict["Year"]:
         backupfolder = os.path.join(backupfolder, year)
     if subfoldersDict["ComputerName"]:
         backupfolder = os.path.join(backupfolder, socket.gethostname())
     if subfoldersDict["DatabaseName"]:
         backupfolder = os.path.join(backupfolder, sqliteDatabaseName)
-
+    if isFullBackup:
+        backupfolder = os.path.join(backupfolder, "full backups")
+    else:
+        backupfolder = os.path.join(backupfolder, "incremental backups")
     return backupfolder
