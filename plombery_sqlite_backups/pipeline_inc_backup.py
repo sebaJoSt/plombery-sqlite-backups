@@ -113,7 +113,7 @@ async def incremental_backup_sqlite_database(params: InputParams):
     )
     if percentage_written > 95 & percentage_written < 100:
         logger.info(
-            f"(Don't worry if 'storage' was empy before starting the backup an percentage is below 100%. This is because of duplicate pages in the sqlite database)"
+            "(Don't worry if 'storage' was empy before starting the backup an percentage is below 100%. This is because of duplicate pages in the sqlite database)"
         )
     logger.info(
         f"{megabyte_added_storage} MB added to 'storage' + Snapshot file {megabyte_snapshot_file} MB = Total {round(megabyte_added_storage + megabyte_snapshot_file,3)} MB"

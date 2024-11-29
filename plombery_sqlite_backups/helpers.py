@@ -4,7 +4,6 @@ import socket
 import sqlite3
 import tzlocal
 import lz4.frame
-from plombery import get_logger
 
 
 async def backup_database_async(

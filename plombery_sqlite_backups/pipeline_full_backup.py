@@ -41,7 +41,7 @@ async def full_backup_sqlite_database(params: InputParams):
     logger.info(f"Source Database: {sqlite_file}")
 
     if params.lz4_compressed:
-        logger.info(f"Mode: LZ4 Compression")
+        logger.info("Mode: LZ4 Compression")
     else:
         logger.info("Mode: Uncompressed")
 
@@ -67,8 +67,8 @@ async def full_backup_sqlite_database(params: InputParams):
 
     if params.lz4_compressed:
         # Compress the file in format lz4
-        logger.info(f"Backup created")
-        logger.info(f"Starting compression (LZ4) ...")
+        logger.info("Backup created")
+        logger.info("Starting compression (LZ4) ...")
         await asyncio.to_thread(
             compress_file_lz4,
             os.path.join(backup_folder, backup_file_name),
