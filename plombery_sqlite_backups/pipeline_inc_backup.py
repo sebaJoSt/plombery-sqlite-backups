@@ -31,7 +31,9 @@ def init(backupdir, sqlitefile):
     sqlite_file = sqlitefile
 
 
-TEMP_FOLDER = os.path.join(tempfile.gettempdir(), "Loggbok")
+TEMP_FOLDER = os.path.join(
+    tempfile.gettempdir(), "plombery_sqlite_backups", "pipeline_inc_backup"
+)
 BACKUP_DIR_SUBFOLDERS = {"Year": True, "ComputerName": True, "DatabaseName": True}
 
 
@@ -73,7 +75,7 @@ async def incremental_backup_sqlite_database(params: InputParams):
         f"Temporary file successfully created: {os.path.join(TEMP_FOLDER, temp_backup_file_name)}"
     )
 
-    logger.info("Creating incremental backup (0% done)")
+    logger.info("Creating incremental backup ..")
 
     # Backup folder/storage
     backup_storage_folder = os.path.join(backup_folder, "storage")
@@ -95,6 +97,7 @@ async def incremental_backup_sqlite_database(params: InputParams):
     )
 
     # Delete temporary full backup
+    logger.info("Deleting temporary file ..")
     os.remove(os.path.join(TEMP_FOLDER, temp_backup_file_name))
 
     logger.info("Temporary file successfully deleted")
@@ -173,21 +176,27 @@ async def create_snapshot(
 
             # Calculate and log % done
             current_page += 1
+            if current_page == 1:
+                logger.info("Writing to 'storage' folder .. (0% done)")
+
             pages_done_percent = round(current_page * 100 / page_count)
             if current_page >= page_current_step:
                 await asyncio.sleep(0.2)
                 logger.info(
-                    f"Creating incremental backup ({pages_done_percent:.0f}% done)"
+                    f"Writing to 'storage' folder .. ({pages_done_percent:.0f}% done)"
                 )
                 page_current_step += 0.1 * page_count
             elif current_page == page_count:
-                logger.info("Creating incremental backup (100% done)")
+                logger.info("Writing to 'storage' folder .. (100% done)")
 
     # Write snapshot file
+    logger.info("Creating the snapshot file ..")
     async with aiofiles.open(backup_file_name_full_path, "w") as snapshot_file:
         for file_name in file_names:
             await snapshot_file.write(file_name + "\n")
-
+    logger.info(
+        f"Snapshot file '{ os.path.basename(backup_file_name_full_path)}' successfuly created"
+    )
     return pages_written_count, page_count, page_size
 
 
