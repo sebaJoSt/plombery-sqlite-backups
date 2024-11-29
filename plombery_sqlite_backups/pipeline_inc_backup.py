@@ -152,7 +152,7 @@ async def create_snapshot(
     pages_done_percent = 0
     pages_written_count = 0
 
-    logger.info("Writing to 'storage' folder .. (0% done)")
+    logger.info("Writing to 'storage' folder .. (0% done - 0 pages added)")
 
     file_names = []
     async with aiofiles.open(source_database_full_path, "rb") as db_file:
@@ -183,10 +183,12 @@ async def create_snapshot(
                 await asyncio.sleep(0.2)
                 if current_page != page_count:
                     logger.info(
-                        f"Writing to 'storage' folder .. ({pages_done_percent:.0f}% done)"
+                        f"Writing to 'storage' folder .. ({pages_done_percent:.0f}% done - {pages_written_count} pages added)"
                     )
                 page_current_step += 0.1 * page_count
-    logger.info("Writing to 'storage' folder finished (100% done)")
+    logger.info(
+        f"Writing to 'storage' folder finished (100% done - {pages_written_count} pages added)"
+    )
 
     # Write snapshot file
     logger.info("Creating the snapshot file ..")
