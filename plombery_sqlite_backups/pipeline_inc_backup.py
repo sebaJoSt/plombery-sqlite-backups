@@ -61,7 +61,7 @@ async def incremental_backup_sqlite_database(params: InputParams):
     )
 
     logger.info(f"Starting the incremental backup into {backup_folder}")
-    logger.info("Create a temporary full backup")
+    logger.info("Creating temporary full backup ..")
 
     # Create temporary backup file name
     temp_backup_file_name = f"temp_{get_formatted_timestamp(now)}.sqlite"
@@ -72,7 +72,7 @@ async def incremental_backup_sqlite_database(params: InputParams):
     )
 
     logger.info(
-        f"Temporary file successfully created: {os.path.join(TEMP_FOLDER, temp_backup_file_name)}"
+        f"Temporary full backup file successfully created: {os.path.join(TEMP_FOLDER, temp_backup_file_name)}"
     )
 
     logger.info("Creating incremental backup ..")
@@ -101,9 +101,6 @@ async def incremental_backup_sqlite_database(params: InputParams):
     os.remove(os.path.join(TEMP_FOLDER, temp_backup_file_name))
 
     logger.info("Temporary file successfully deleted")
-    logger.info(
-        f"Incremental backup successfully created: {os.path.join(backup_folder, snapshot_file_name)}"
-    )
 
     # Statistics
     percentage_written = round(pages_written_count * 100 / page_total_count)
@@ -121,6 +118,8 @@ async def incremental_backup_sqlite_database(params: InputParams):
     logger.info(
         f"{megabyte_added_storage} MB added to 'storage' + Snapshot file {megabyte_snapshot_file} MB = Total {round(megabyte_added_storage + megabyte_snapshot_file,3)} MB"
     )
+
+    logger.info("All done.")
 
 
 async def create_snapshot(
@@ -182,21 +181,20 @@ async def create_snapshot(
             pages_done_percent = round(current_page * 100 / page_count)
             if current_page >= page_current_step:
                 await asyncio.sleep(0.2)
-                logger.info(
-                    f"Writing to 'storage' folder .. ({pages_done_percent:.0f}% done)"
-                )
+                if current_page != page_count:
+                    logger.info(
+                        f"Writing to 'storage' folder .. ({pages_done_percent:.0f}% done)"
+                    )
+                else:
+                    logger.info("Writing to 'storage' folder finished (100% done)")
                 page_current_step += 0.1 * page_count
-            elif current_page == page_count:
-                logger.info("Writing to 'storage' folder .. (100% done)")
 
     # Write snapshot file
     logger.info("Creating the snapshot file ..")
     async with aiofiles.open(backup_file_name_full_path, "w") as snapshot_file:
         for file_name in file_names:
             await snapshot_file.write(file_name + "\n")
-    logger.info(
-        f"Snapshot file '{ os.path.basename(backup_file_name_full_path)}' successfuly created"
-    )
+    logger.info(f"Snapshot file successfully created: {backup_file_name_full_path}")
     return pages_written_count, page_count, page_size
 
 
